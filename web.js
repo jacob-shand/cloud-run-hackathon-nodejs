@@ -23,7 +23,7 @@ app.post("/", function (req, res) {
   if (currentDirection != "W" && currentX != 0) {
     // console.log("turn left for X");
     moveNeeded = false;
-    move = faceLeft(currentDirection);
+    move = faceLeft(currentDirection, currentPlayers, currentX, currentY);
   } else if (currentX != 0 && moveNeeded) {
     // console.log("move forward for x");
     moveNeeded = false;
@@ -31,7 +31,7 @@ app.post("/", function (req, res) {
   } else if (currentDirection != "N" && currentY != 0 && moveNeeded) {
     // console.log("face up for y");
     moveNeeded = false;
-    move = faceUp(currentDirection);
+    move = faceUp(currentDirection, currentPlayers, currentX, currentY);
   } else if (currentY != 0 && moveNeeded) {
     // console.log("move forward for y");
     moveNeeded = false;
@@ -55,6 +55,7 @@ app.post("/", function (req, res) {
 app.listen(process.env.PORT || 8080);
 
 function checkShoot(currentPlayers, currentDirection, currentX, currentY) {
+  console.log(currentPlayers);
   for (const [key, value] of Object.entries(currentPlayers.state)) {
     switch (currentDirection) {
       case "N":
@@ -103,7 +104,7 @@ function faceLeft(currentDirection, currentPlayers, currentX, currentY) {
   }
 }
 
-function faceUp(currentDirection) {
+function faceUp(currentDirection, currentPlayers, currentX, currentY) {
   checkShoot = checkShoot(currentPlayers, currentDirection, currentX, currentY);
   if (checkShoot == "T") {
     return "T";
