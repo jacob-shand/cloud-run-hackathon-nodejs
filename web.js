@@ -17,9 +17,9 @@ app.post("/", function (req, res) {
   currentDirection =
     req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
       .direction;
-  console.log(currentDirection);
 
   moveNeeded = true;
+
   if (currentDirection != "W" && currentX != 0) {
     console.log("turn left for X");
     moveNeeded = false;
@@ -36,24 +36,23 @@ app.post("/", function (req, res) {
     console.log("move forward for y");
     moveNeeded = false;
     move = "F";
-  } else if (currentDirection != "E") {
-    if (currentDirection != "S") {
-      console.log("face east");
-      move = faceEast(currentDirection);
-    }
+  } else if (currentDirection != "E" && currentDirection != "S" && moveNeeded) {
+    moveNeeded = true;
+    console.log("face east");
+    move = faceEast(currentDirection);
   } else if (currentDirection == "E") {
+    moveNeeded = true;
+    console.log("check other players");
+    move = checkOtherPlayers(currentPlayers, currentDirection);
+  } else if (currentDirection == "S") {
+    moveNeeded = true;
     console.log("check other players");
     move = checkOtherPlayers(currentPlayers, currentDirection);
   }
-  try {
-    console.log(move);
-    res.send(move);
-  } catch {
-    move = checkOtherPlayers(currentPlayers, "S");
-    res.send(move);
-  }
-});
 
+  console.log(move);
+  res.send(move);
+});
 app.listen(process.env.PORT || 8080);
 
 function faceEast(currentDirection) {
