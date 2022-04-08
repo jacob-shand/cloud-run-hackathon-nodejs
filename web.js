@@ -90,7 +90,12 @@ function faceEast(currentDirection) {
 }
 
 function faceLeft(currentDirection, currentPlayers, currentX, currentY) {
-  checkShoot = checkShoot(currentPlayers, currentDirection, currentX, currentY);
+  checkShootValue = checkShoot(
+    currentPlayers,
+    currentDirection,
+    currentX,
+    currentY
+  );
   if (checkShoot == "T") {
     return "T";
   }
@@ -105,7 +110,12 @@ function faceLeft(currentDirection, currentPlayers, currentX, currentY) {
 }
 
 function faceUp(currentDirection, currentPlayers, currentX, currentY) {
-  checkShoot = checkShoot(currentPlayers, currentDirection, currentX, currentY);
+  checkShootValue = checkShoot(
+    currentPlayers,
+    currentDirection,
+    currentX,
+    currentY
+  );
   if (checkShoot == "T") {
     return "T";
   }
