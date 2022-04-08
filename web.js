@@ -27,7 +27,18 @@ app.post("/", function (req, res) {
   } else if (currentX != 0 && moveNeeded) {
     // console.log("move forward for x");
     moveNeeded = false;
-    move = "F";
+    checkShootValue = checkShoot(
+      currentPlayers,
+      currentDirection,
+      currentX,
+      currentY
+    );
+    console.log(checkShootValue);
+    if (checkShootValue == "T") {
+      move = "T";
+    } else {
+      move = "F";
+    }
   } else if (currentDirection != "N" && currentY != 0 && moveNeeded) {
     // console.log("face up for y");
     moveNeeded = false;
@@ -57,21 +68,43 @@ app.listen(process.env.PORT || 8080);
 function checkShoot(currentPlayers, currentDirection, currentX, currentY) {
   console.log(currentPlayers);
   for (const [key, value] of Object.entries(currentPlayers.state)) {
+    console.log(key);
     switch (currentDirection) {
       case "N":
-        if (value.x == currentX && value.y + 4 > currentY) {
+        if (
+          value.x == currentX &&
+          value.y + 4 < currentY &&
+          key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
+        ) {
+          console.log("throw");
           return "T";
         }
       case "E":
-        if (value.y == currentY && value.x - 4 > currentX) {
+        console.log(value.x);
+        if (
+          value.y == currentY &&
+          value.x - 4 < currentX &&
+          key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
+        ) {
+          console.log("throw why ");
           return "T";
         }
       case "W":
-        if (value.y == currentY && value.x + 4 > currentX) {
+        if (
+          value.y == currentY &&
+          value.x + 4 > currentX &&
+          key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
+        ) {
+          console.log("throw");
           return "T";
         }
       case "S":
-        if (value.x == currentX && value.y - 4 > currentY) {
+        if (
+          value.x == currentX &&
+          value.y - 4 > currentY &&
+          key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
+        ) {
+          console.log("throw");
           return "T";
         }
     }
@@ -96,7 +129,7 @@ function faceLeft(currentDirection, currentPlayers, currentX, currentY) {
     currentX,
     currentY
   );
-  if (checkShoot == "T") {
+  if (checkShootValue == "T") {
     return "T";
   }
   switch (currentDirection) {
@@ -116,7 +149,7 @@ function faceUp(currentDirection, currentPlayers, currentX, currentY) {
     currentX,
     currentY
   );
-  if (checkShoot == "T") {
+  if (checkShootValue == "T") {
     return "T";
   }
   switch (currentDirection) {
