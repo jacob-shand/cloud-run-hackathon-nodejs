@@ -9,9 +9,6 @@ app.get("/", function (req, res) {
 });
 
 app.post("/", function (req, res) {
-  console.log(
-    req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
-  );
   currentPlayers = req.body.arena;
   currentX =
     req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].x;
@@ -20,6 +17,7 @@ app.post("/", function (req, res) {
   currentDirection =
     req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
       .direction;
+  console.log(currentDirection);
 
   moveNeeded = true;
   if (currentDirection != "W" && currentX != 0) {
@@ -43,15 +41,17 @@ app.post("/", function (req, res) {
       console.log("face east");
       move = faceEast(currentDirection);
     }
-  } else if (currentDirection == "E" || currentDirection == "S") {
-    console.log("check other playerss");
+  } else if (currentDirection == "E") {
+    console.log("check other players");
     move = checkOtherPlayers(currentPlayers, currentDirection);
   }
-
-  // var currentPosition =
-  // console.log(req.body);
-  console.log(move);
-  res.send(move);
+  try {
+    console.log(move);
+    res.send(move);
+  } catch {
+    move = checkOtherPlayers(currentPlayers, "S");
+    res.send(move);
+  }
 });
 
 app.listen(process.env.PORT || 8080);
@@ -90,14 +90,12 @@ function faceUp(currentDirection) {
 }
 
 function checkOtherPlayers(currentPlayers, currentDirection) {
-  console.log(typeof currentPlayers.state);
+  console.log(currentDirection);
   for (const [key, value] of Object.entries(currentPlayers.state)) {
-    console.log(key);
-    console.log(value);
     if (
       ((value.x < 3 && value.y == 0 && currentDirection == "E") ||
         (value.y < 3 && value.x == 0 && currentDirection == "S")) &&
-      value != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
+      key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
     ) {
       return "T";
     }
