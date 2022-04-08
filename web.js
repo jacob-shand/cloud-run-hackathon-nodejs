@@ -21,36 +21,35 @@ app.post("/", function (req, res) {
   moveNeeded = true;
 
   if (currentDirection != "W" && currentX != 0) {
-    console.log("turn left for X");
+    // console.log("turn left for X");
     moveNeeded = false;
     move = faceLeft(currentDirection);
   } else if (currentX != 0 && moveNeeded) {
-    console.log("move forward for x");
+    // console.log("move forward for x");
     moveNeeded = false;
     move = "F";
   } else if (currentDirection != "N" && currentY != 0 && moveNeeded) {
-    console.log("face up for y");
+    // console.log("face up for y");
     moveNeeded = false;
     move = faceUp(currentDirection);
   } else if (currentY != 0 && moveNeeded) {
-    console.log("move forward for y");
+    // console.log("move forward for y");
     moveNeeded = false;
     move = "F";
   } else if (currentDirection != "E" && currentDirection != "S" && moveNeeded) {
     moveNeeded = true;
-    console.log("face east");
+    // console.log("face east");
     move = faceEast(currentDirection);
   } else if (currentDirection == "E") {
     moveNeeded = true;
-    console.log("check other players");
+    // console.log("check other players");
     move = checkOtherPlayers(currentPlayers, currentDirection);
   } else if (currentDirection == "S") {
     moveNeeded = true;
-    console.log("check other players");
+    // console.log("check other players");
     move = checkOtherPlayers(currentPlayers, currentDirection);
   }
 
-  console.log(move);
   res.send(move);
 });
 app.listen(process.env.PORT || 8080);
@@ -91,6 +90,7 @@ function faceUp(currentDirection) {
 function checkOtherPlayers(currentPlayers, currentDirection) {
   console.log(currentDirection);
   for (const [key, value] of Object.entries(currentPlayers.state)) {
+    console.log(key);
     if (
       ((value.x < 4 && value.y == 0 && currentDirection == "E") ||
         (value.y < 4 && value.x == 0 && currentDirection == "S")) &&
