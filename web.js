@@ -92,8 +92,8 @@ function checkOtherPlayers(currentPlayers, currentDirection) {
   console.log(currentDirection);
   for (const [key, value] of Object.entries(currentPlayers.state)) {
     if (
-      ((value.x < 3 && value.y == 0 && currentDirection == "E") ||
-        (value.y < 3 && value.x == 0 && currentDirection == "S")) &&
+      ((value.x < 4 && value.y == 0 && currentDirection == "E") ||
+        (value.y < 4 && value.x == 0 && currentDirection == "S")) &&
       key != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
     ) {
       return "T";
