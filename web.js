@@ -10,43 +10,62 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
   console.log(
-    req.body.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
+    req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
   );
   currentPlayers = req.body;
   currentX =
-    req.body.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].x;
+    req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].x;
   currentY =
-    req.body.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].y;
+    req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].y;
   currentDirection =
-    req.body.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].direction;
+    req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
+      .direction;
 
   moveNeeded = true;
   if (currentDirection != "W" && currentX != 0) {
+    console.log("turn left for X");
     moveNeeded = false;
     move = faceLeft(currentDirection);
   } else if (currentX != 0 && moveNeeded) {
+    console.log("move forward for x");
     moveNeeded = false;
     move = "F";
   } else if (currentDirection != "N" && currentY != 0 && moveNeeded) {
+    console.log("face up for y");
     moveNeeded = false;
     move = faceUp(currentDirection);
-  }
-  if (currentY != 0 && moveNeeded) {
+  } else if (currentY != 0 && moveNeeded) {
+    console.log("move forward for y");
     moveNeeded = false;
     move = "F";
-  }
-
-  if (currentdirection == "E" || currentDirection == "S") {
+  } else if (currentDirection != "E") {
+    if (currentDirection != "S") {
+      console.log("face east");
+      move = faceEast(currentDirection);
+    }
+  } else if (currentDirection == "E" || currentDirection == "S") {
+    console.log("check other playerss");
     move = checkOtherPlayers(currentPlayers, currentDirection);
   }
 
   // var currentPosition =
   // console.log(req.body);
-
+  console.log(move);
   res.send(move);
 });
 
 app.listen(process.env.PORT || 8080);
+
+function faceEast(currentDirection) {
+  switch (currentDirection) {
+    case "N":
+      return "R";
+    case "W":
+      return "R";
+    case "S":
+      return "L";
+  }
+}
 
 function faceLeft(currentDirection) {
   switch (currentDirection) {
