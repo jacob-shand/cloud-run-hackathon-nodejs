@@ -54,6 +54,29 @@ app.post("/", function (req, res) {
 });
 app.listen(process.env.PORT || 8080);
 
+function checkShoot(currentPlayers, currentDirection, currentX, currentY) {
+  for (const [key, value] of Object.entries(currentPlayers.state)) {
+    switch (currentDirection) {
+      case "N":
+        if (value.x == currentX && value.y + 4 > currentY) {
+          return "T";
+        }
+      case "E":
+        if (value.y == currentY && value.x - 4 > currentX) {
+          return "T";
+        }
+      case "W":
+        if (value.y == currentY && value.x + 4 > currentX) {
+          return "T";
+        }
+      case "S":
+        if (value.x == currentX && value.y - 4 > currentY) {
+          return "T";
+        }
+    }
+  }
+}
+
 function faceEast(currentDirection) {
   switch (currentDirection) {
     case "N":
@@ -65,7 +88,11 @@ function faceEast(currentDirection) {
   }
 }
 
-function faceLeft(currentDirection) {
+function faceLeft(currentDirection, currentPlayers, currentX, currentY) {
+  checkShoot = checkShoot(currentPlayers, currentDirection, currentX, currentY);
+  if (checkShoot == "T") {
+    return "T";
+  }
   switch (currentDirection) {
     case "N":
       return "L";
@@ -77,6 +104,10 @@ function faceLeft(currentDirection) {
 }
 
 function faceUp(currentDirection) {
+  checkShoot = checkShoot(currentPlayers, currentDirection, currentX, currentY);
+  if (checkShoot == "T") {
+    return "T";
+  }
   switch (currentDirection) {
     case "E":
       return "L";
