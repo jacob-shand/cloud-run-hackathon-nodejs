@@ -12,7 +12,7 @@ app.post("/", function (req, res) {
   console.log(
     req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"]
   );
-  currentPlayers = req.body;
+  currentPlayers = req.body.arena;
   currentX =
     req.body.arena.state["https://attitudepebbles-2kxpytz2oa-ts.a.run.app"].x;
   currentY =
@@ -90,16 +90,21 @@ function faceUp(currentDirection) {
 }
 
 function checkOtherPlayers(currentPlayers, currentDirection) {
-  for (player in currentPlayers) {
+  console.log(typeof currentPlayers.state);
+  for (const [key, value] of Object.entries(currentPlayers.state)) {
+    console.log(key);
+    console.log(value);
     if (
-      (player.x < 3 && player.y == 0 && currentDirection == "E") ||
-      (player.y < 3 && player.x == 0 && currentDirection == "S")
+      ((value.x < 3 && value.y == 0 && currentDirection == "E") ||
+        (value.y < 3 && value.x == 0 && currentDirection == "S")) &&
+      value != "https://attitudepebbles-2kxpytz2oa-ts.a.run.app"
     ) {
       return "T";
-    } else if (currentDirection == "E") {
-      return "R";
-    } else {
-      return "L";
     }
+  }
+  if (currentDirection == "E") {
+    return "R";
+  } else {
+    return "L";
   }
 }
